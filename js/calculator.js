@@ -16,16 +16,18 @@ function divide(num1, num2){ // I will have to check for 0 outside
    return num1/num2;
 }
 
+/*You should round answers with long decimals so that they don’t overflow the screen.
+I will round to 4 decimals */
+function round(num){
+   return Math.round(num*100000)/100000;
+};
+
 /* A calculator operation will consist of a number, an operator, and another number. 
 For example, 3 + 5. Create three variables for each of the parts of a calculator operation. 
 Create a variable for the first number, the operator, and the second number. You’ll use these variables 
 to update your display later. */
 
-let firstNumber = 0.0;
-let secondNumber = 0.0;
-let operator = "";
-let isSecondNumber = false;
-let isSecondOperation = false;   /* I need this one to see if I am concatenating operations */
+let operation = {};
 
 /* Create a new function operate that takes an operator and 2 numbers and then calls one of 
 the above functions on the numbers. */
@@ -40,6 +42,8 @@ function operate(operator,num1,num2) {
          return multiply(num1,num2);
       case '/':
          return divide(num1,num2);
+      case '=':
+         return num1;
       default:
          return "error";
    }
@@ -54,63 +58,55 @@ const display = document.querySelector('#display');
 let aux = "";
 number.forEach(button=>button.addEventListener('click', function(e) {
    aux = aux + this.value;
-   display.textContent = aux;
+   display.textContent = round(parseFloat(aux));
 }));
 
 /* Make the calculator work! You’ll need to store the first number that is input 
 into the calculator when a user presses an operator, and also save which operation 
 has been chosen and then operate() on them when the user presses the “=” key. */
-const operation = document.querySelectorAll('.operator');
-operation.forEach(button=>button.addEventListener('click', function(e) {
-  
-   /* Si es la segunda operación no quiero tratarlo como un primer numero 
-      Introduzco primer numero
-      Se pulsa una operación (que es lo que ocurre aquí)
-   */
-    
-   if (operator === ""){
-      firstNumber = parseFloat(aux);
-      aux = "";
-      operator = this.value;
-      display.textContent = firstNumber;
-   } 
-   
-   else if (this.value === '='){
-      secondNumber = parseFloat(aux);
-      let result = operate(operator,firstNumber,secondNumber);
-      display.textContent = result;
-      aux = "" +result;  
-      isSecondOperation = false;
-   }
-   else { 
-      secondNumber = parseFloat(aux);
-      let result = operate(operator,firstNumber,secondNumber);
-      operator = this.value;
-      isSecondOperation = true;
-      display.textContent = result;
+const operator = document.querySelectorAll('.operator');
+operator.forEach(button=>button.addEventListener('click', function(e) {
+   if (!operation.hasOwnProperty("operator")){
+       
+      if (this.value !== '=') {
+         operation.num1 = parseFloat(aux);
+         aux = "" ; 
+         operation.operator = this.value;
+       
+      }
       
-      /* I need to check if it is the second time that I am pressing an operation for concatenating right
-      otherwise it kept adding numbers to result without operating */
-      if (isSecondOperation) {
-         firstNumber = result;
-         aux="";
-      }
-      else {
-         aux = ""+result;
+   }
+   
+   else {
+      if (aux !== ""){
+         operation.num2 = parseFloat(aux);
+        
+         let result = operate(operation.operator,operation.num1,operation.num2);
+         display.textContent = round(result);
+         aux = "" +result;  
+         
+         // I should clean the object and prepare for next operation
+         operation = {};
+      
+         if (this.value !== "=") {
+            operation.num1 = parseFloat(aux);
+            operation.operator = this.value;
+            aux = "";
+         };
+       
       }
    }
+
+   
+
    
 }));
 
 /* Pressing “clear” should wipe out any existing data.. make sure the user is really starting fresh after pressing “clear" */
 const clean = document.querySelector('#clean');
 clean.addEventListener('click', function(e) {
-   firstNumber = 0.0;
-   secondNumber = 0.0;
-   operator = "";
+   operation = {};
    aux = "";
-   isSecondNumber = false;
-   isSecondOperation = false;
    display.textContent = 0;
 });
 
