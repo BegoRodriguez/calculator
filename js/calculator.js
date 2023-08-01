@@ -64,15 +64,17 @@ number.forEach(button=>button.addEventListener('click', function(e) {
 /* Make the calculator work! You’ll need to store the first number that is input 
 into the calculator when a user presses an operator, and also save which operation 
 has been chosen and then operate() on them when the user presses the “=” key. */
+
 const operator = document.querySelectorAll('.operator');
 operator.forEach(button=>button.addEventListener('click', function(e) {
    if (!operation.hasOwnProperty("operator")){
        
       if (this.value !== '=') {
-         operation.num1 = parseFloat(aux);
-         aux = "" ; 
-         operation.operator = this.value;
-       
+         if (aux !== ""){ // Not to allow to crash after they tried to divide by zero
+            operation.num1 = parseFloat(aux);
+            aux = "" ; 
+            operation.operator = this.value;
+         }
       }
       
    }
@@ -80,26 +82,31 @@ operator.forEach(button=>button.addEventListener('click', function(e) {
    else {
       if (aux !== ""){
          operation.num2 = parseFloat(aux);
-        
-         let result = operate(operation.operator,operation.num1,operation.num2);
-         display.textContent = round(result);
-         aux = "" +result;  
-         
-         // I should clean the object and prepare for next operation
-         operation = {};
-      
-         if (this.value !== "=") {
-            operation.num1 = parseFloat(aux);
-            operation.operator = this.value;
+
+         /* Display a snarky error message if the user tries to divide by 0… and don’t let it crash your calculator! */
+         if ((operation.num2 === 0) && (operation.operator === '/')){
+            display.textContent = "Good Try!";
+            operation = {};
             aux = "";
-         };
-       
+         }
+         else {
+            let result = operate(operation.operator,operation.num1,operation.num2);
+            display.textContent = round(result);
+            aux = "" +result;  
+            
+            // I should clean the object and prepare for next operation
+            operation = {};
+         
+            if (this.value !== "=") {
+               operation.num1 = parseFloat(aux);
+               operation.operator = this.value;
+               aux = "";
+            };
+         }
+        
       }
    }
 
-   
-
-   
 }));
 
 /* Pressing “clear” should wipe out any existing data.. make sure the user is really starting fresh after pressing “clear" */
