@@ -51,12 +51,29 @@ function operate(operator,num1,num2) {
 
 /* Create the functions that populate the display when you click the number buttons. 
 You should be storing the ‘display value’ in a variable somewhere for use in the next step. */
-const number = document.querySelectorAll('.number');
 const display = document.querySelector('#display');
-//const smallDisplay = document.querySelector('#smallDisplay');
+const decimal = document.querySelector('#decimal');
 
 let aux = "";
+
+/* Users can get floating point numbers if they do the math required to get one, but they can’t type them in yet. 
+Add a . button and let users input decimals! Make sure you don’t let them type more than one though: 12.3.56.5. 
+It is hard to do math on these numbers. (disable the decimal button if there’s already one in the display)*/
+function checkDecimal() {
+   if (aux.includes(".")){
+      decimal.setAttribute("disabled", "disabled");
+      return true;
+   }
+   
+   else {
+      decimal.removeAttribute("disabled");
+      return false;
+   }
+}
+
+const number = document.querySelectorAll('.number');
 number.forEach(button=>button.addEventListener('click', function(e) {
+   checkDecimal();
    aux = aux + this.value;
    display.textContent = round(parseFloat(aux));
 }));
@@ -67,7 +84,18 @@ has been chosen and then operate() on them when the user presses the “=” key
 
 const operator = document.querySelectorAll('.operator');
 operator.forEach(button=>button.addEventListener('click', function(e) {
-   if (!operation.hasOwnProperty("operator")){
+
+   checkDecimal();
+
+   if (this.value === '.') {
+      console.log("I pressed the point");
+      if (!checkDecimal()){
+         aux = aux + ".";
+         display.textContent = aux;
+      }
+   }
+   
+   else if (!operation.hasOwnProperty("operator")){
        
       if (this.value !== '=') {
          if (aux !== ""){ // Not to allow to crash after they tried to divide by zero
@@ -115,6 +143,7 @@ clean.addEventListener('click', function(e) {
    operation = {};
    aux = "";
    display.textContent = 0;
+   decimal.removeAttribute("disabled");
 });
 
 const cleanOne = document.querySelector('#cleanOne');
