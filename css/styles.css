@@ -14,7 +14,7 @@ body {
     justify-content: center;
 }
 
-#display {
+#display, #smallDisplay {
     background-color: rgb(97, 176, 141);
     width: 88.5%;
     margin: 1em;
