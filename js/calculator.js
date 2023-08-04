@@ -149,6 +149,7 @@ clean.addEventListener('click', function(e) {
 const cleanOne = document.querySelector('#cleanOne');
 cleanOne.addEventListener('click', function(e) {
    aux = aux.slice(0,aux.length-1);
+   if (aux.length == 0) aux = "0";
    display.textContent = aux;
 });
 

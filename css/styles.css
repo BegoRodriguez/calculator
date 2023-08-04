@@ -2,13 +2,14 @@
 
 body {
     font-family: 'Tektur', cursive;
+    font-size: 16px;
 }
 
 #calculator {
     background-color: rgb(35, 35, 35);
-    width: 450px;
-    margin: 2em auto;
-    padding: 1em 0;
+    width: 80vmin;
+    margin: 2rem auto;
+    padding: 1rem 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -16,15 +17,16 @@ body {
 
 #display {
     background-color: rgb(97, 176, 141);
-    width: 88.5%;
-    margin: 1em;
-    padding: 1em;
-    font-size: 2em;
+    width: 76vmin;
+    margin: 1rem;
+    padding: 1rem;
+    font-size: 2rem;
 }
 
 button {
     text-align: center;
-    width: 80px;
+    width: 15vmin;
+    
 }
 
 .number {
@@ -32,7 +34,7 @@ button {
 }
 
 .big {
-    width: 160px;
+    width: 30vmin;
 }
 
 .operator {
