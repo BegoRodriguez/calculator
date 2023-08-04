@@ -8,7 +8,7 @@ body {
 #calculator {
     background-color: rgb(35, 35, 35);
     width: 80vmin;
-    height: 80vmin;
+    height: 80vh;
     margin: 2rem auto;
     padding: 1rem 0;
     display: flex;
