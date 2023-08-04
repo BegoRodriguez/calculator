@@ -8,6 +8,7 @@ body {
 #calculator {
     background-color: rgb(35, 35, 35);
     width: 80vmin;
+    height: 80vmin;
     margin: 2rem auto;
     padding: 1rem 0;
     display: flex;
@@ -21,6 +22,7 @@ body {
     margin: 1rem;
     padding: 1rem;
     font-size: 2rem;
+    align-self: center;
 }
 
 button {
