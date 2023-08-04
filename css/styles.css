@@ -5,6 +5,10 @@ body {
     font-size: 1.75rem;
 }
 
+h1 {
+    font-size: 2rem;
+}
+
 #calculator {
     background-color: rgb(35, 35, 35);
     width: 80vmin;
